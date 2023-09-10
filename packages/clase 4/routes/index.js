@@ -1,3 +1,4 @@
+import { DefaultController } from '../controllers/default.js'
 import { RouterMovies } from './movies.js'
 // -------------------------
 export default function router(app) {
@@ -5,7 +6,5 @@ export default function router(app) {
   // -------------------------
   app.use('/movies', RouterMovies)
   // -------------------------
-  app.use((req, res) => {
-    res.status(404).json({ message: 'Not found' })
-  })
+  app.use(DefaultController.otherWise)
 }

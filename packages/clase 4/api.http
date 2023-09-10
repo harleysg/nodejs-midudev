@@ -8,11 +8,11 @@ GET http://localhost:1234/movies?genre=Drama
 GET http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 
 ###
-DELETE  http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+DELETE  http://localhost:1234/movies/21ca3db0-85e5-4805-a9c8-906d75f99642
 Content-Type: application/json
 
 ###
-PATCH  http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+PATCH  http://localhost:1234/movies/21ca3db0-85e5-4805-a9c8-906d75f99642
 Content-Type: application/json
 
 {
