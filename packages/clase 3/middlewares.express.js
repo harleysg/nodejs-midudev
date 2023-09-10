@@ -1,7 +1,9 @@
 const bodyParser = require('body-parser')
+const extractUserAgent = require('../sources/services/index.js')
 // ---------------------------
 const rudimentaryCORS = (req, res) => {
   const origin = req.header('origin')
+  const ACCEPTED_ORIGINS = process.env.ACCEPTED_ORIGINS ?? ['http://localhost:8080']
   
   if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
     res.header('Access-Control-Allow-Origin', origin ?? '*')
@@ -9,7 +11,11 @@ const rudimentaryCORS = (req, res) => {
   }
 }
 // ---------------------------
-const ACCEPTED_ORIGINS = process.env.ACCEPTED_ORIGINS ?? ['*', 'http://localhost:8080']
+const userAgentHeader = (req, res) => {
+  const clientInfo = extractUserAgent(req.headers['user-agent'])
+
+  res.header('User-Agent', JSON.stringify(clientInfo))
+}
 // ---------------------------
 module.exports = function middelwares(app) {
   app.use(bodyParser.json());
@@ -17,6 +23,7 @@ module.exports = function middelwares(app) {
     const { method, body, url } = req
   
     rudimentaryCORS(req, res)
+    userAgentHeader(req, res)
   
     if (method === 'POST') {
       if (!body) {

@@ -1,6 +1,6 @@
 const crypto = require('node:crypto')
 // -------------------------
-const movies = require('../sources/json/movies.json')
+const MOVIES = require('../sources/json/movies.json')
 const { validateMovie, validateMoviePartial } = require('./schema/movie')
 // -------------------------
 module.exports = function router(app) {
@@ -10,7 +10,7 @@ module.exports = function router(app) {
     const { genre } = req.query
 
     if (genre) {
-      const genrerFiltered = movies.filter(
+      const genrerFiltered = MOVIES.filter(
         movie => movie.genre.some(g => g.toLocaleLowerCase() === genre.toLocaleLowerCase())
       )
 
@@ -18,12 +18,12 @@ module.exports = function router(app) {
 
     }
 
-    res.json(movies)
+    res.json(MOVIES)
   })
   // -------------------------
   app.get('/movies/:id', (req, res) => {
     const { id } = req.params
-    const movie = movies.find(movie => movie.id === id)
+    const movie = MOVIES.find(movie => movie.id === id)
 
     if (movie) return res.json(movie)
 
@@ -39,13 +39,13 @@ module.exports = function router(app) {
     }
     
     const { id } = req.params
-    const movieIndex = movies.findIndex(movie => movie.id === id)
+    const movieIndex = MOVIES.findIndex(movie => movie.id === id)
     
     if (movieIndex === -1) {
       return res.status(404).json({ error: 'Movie not found' })
     }
 
-    movies.splice(movieIndex, 1)
+    MOVIES.splice(movieIndex, 1)
 
     res.status(202).json({ message: 'Movie deleted' })
   })
@@ -59,18 +59,18 @@ module.exports = function router(app) {
     }
     
     const { id } = req.params
-    const movieIndex = movies.findIndex(movie => movie.id === id)
+    const movieIndex = MOVIES.findIndex(movie => movie.id === id)
     
     if (movieIndex === -1) {
       return res.status(404).json({ error: 'Movie not found' })
     }
 
     const newMovie = {
-      ...movies[movieIndex],
+      ...MOVIES[movieIndex],
       ...result.data
     }
 
-    movies[movieIndex] = newMovie
+    MOVIES[movieIndex] = newMovie
 
     res.status(201).json(newMovie)
   })
@@ -93,7 +93,7 @@ module.exports = function router(app) {
       ...result.data
     }
 
-    movies.push(newMovie)
+    MOVIES.push(newMovie)
 
     res.status(201).json(newMovie)
   })

@@ -8,18 +8,21 @@
     * {
       box-sizing: border-box;
     }
+    :root {
+      --movie-card-size-width: 300px;
+      --movie-container-grid: repeat(auto-fill, minmax(15px, calc(var(--movie-card-size-width) - 10px)));
+    }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
-    main {
+    .movie-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, calc(250px - 10px)));
+      grid-template-columns: var(--movie-container-grid);
       grid-auto-rows: minmax(300px, 1fr);
       gap: 10px;
       width: 100%;
-      max-width: calc((250px * 3) + (7px * 3));
       margin: 0 auto;
-      justify-content: space-between;
+      justify-content: center;
       padding: 7px;
     }
 
@@ -29,6 +32,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
+    }
+
+    section {
+      max-width: 64em;
+      width: 100%;
+      margin-inline: auto;
     }
 
     article > * {
@@ -51,9 +60,15 @@
       height: auto;
       object-fit: cover;
     }
+
+    @media screen and (min-width: 55em) {
+      :root {
+        --movie-card-size-width: 250px;
+      }
+    }
   </style>
   <script type="module">
-    const main = document.querySelector('main')
+    const $movieList = document.querySelector('#movieList')
     fetch('http://localhost:1234/movies')
       .then(res => res.json())
       .then(movies => {
@@ -67,10 +82,10 @@
           </article>`
         }).join('')
 
-        main.innerHTML = html
+        $movieList.innerHTML = html
       })
 
-      main.addEventListener('click', event => {
+      $movieList.addEventListener('click', event => {
         const { target } = event
         const { id } = target.dataset
         const article = target.closest('article')
@@ -89,6 +104,10 @@
   </script>
 </head>
 <body>
-  <main></main>
+  <main>
+    <section>
+      <div id="movieList" class="movie-container"></div>
+    </section>
+  </main>
 </body>
 </html>
